@@ -9,11 +9,13 @@ pipeline {
       }
     }
     stage('Deploy') {
+      when { not { branch 'feature' } }
       steps {
         echo 'Pack Images'
       }
     }
     stage('Regression') {
+      when { not { branch 'feature' } }
       parallel {
         stage('Business') {
           steps {
@@ -38,11 +40,13 @@ pipeline {
       }
     }
     stage('Acceptance') {
+      when { not { branch 'feature' } }
       steps {
         input 'Accept for production?'
       }
     }
     stage('Production') {
+      when { not { branch 'feature' } }
       steps {
         echo 'Production deployment'
       }
