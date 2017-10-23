@@ -39,6 +39,7 @@ pipeline {
       }
     }
     stage('Acceptance') {
+      when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
       steps {
         input 'Accept for production?'
       }
