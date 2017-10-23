@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        echo 'Continuous Integration on branch ${env.BRANCH_NAME}'
+        echo "Continuous Integration on branch ${env.BRANCH_NAME}"
         echo 'Build libraries'
         echo 'Test deployment'
         echo 'Run unittests'
