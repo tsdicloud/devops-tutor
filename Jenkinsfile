@@ -27,11 +27,13 @@ pipeline {
           }
         }
         stage('Performance') {
+          when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
           steps {
             echo 'Check performance on load'
           }
         }
         stage('Stability') {
+          when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
           steps {
             echo 'Run chaos monkeys'
           }
@@ -45,6 +47,7 @@ pipeline {
       }
     }
     stage('Production') {
+      when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
       steps {
         echo 'Production deployment'
       }
