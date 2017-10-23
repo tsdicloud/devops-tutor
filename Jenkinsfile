@@ -10,11 +10,13 @@ pipeline {
       }
     }
     stage('Deploy') {
+      when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
       steps {
         echo 'Pack Images'
       }
     }
     stage('Regression') {
+      when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
       parallel {
         stage('Business') {
           steps {
@@ -27,13 +29,11 @@ pipeline {
           }
         }
         stage('Performance') {
-          when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
           steps {
             echo 'Check performance on load'
           }
         }
         stage('Stability') {
-          when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
           steps {
             echo 'Run chaos monkeys'
           }
