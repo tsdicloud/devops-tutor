@@ -47,6 +47,7 @@ pipeline {
             echo 'Calm down phase'
             echo 'Run Biz regression'
           }
+        }
       }
     }
     stage('Acceptance') {
