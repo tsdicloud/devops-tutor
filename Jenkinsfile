@@ -4,11 +4,12 @@ pipeline {
    stage('Build') {
       steps {
         echo "Continuous Integration on branch ${env.BRANCH_NAME}"
+        echo 'Code checks' 
         echo 'Build libraries'
         echo 'Run unittests'
       }
     }
-   stage('Build') {
+   stage('DevQuality') {
       steps {
         echo "Checking ${env.BRANCH_NAME}"
         echo 'Unittests...'
