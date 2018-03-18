@@ -1,29 +1,31 @@
 pipeline {
   agent any
   stages {
-    stage('Build') {
+   stage('Build') {
       steps {
         echo "Continuous Integration on branch ${env.BRANCH_NAME}"
         echo 'Build libraries'
-        echo 'Test deployment'
         echo 'Run unittests'
       }
     }
-    stage('Deploy') {
-      when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
+   stage('Build') {
       steps {
-        echo 'Pack Images'
+        echo "Checking ${env.BRANCH_NAME}"
+        echo 'Unittests...'
+        echo 'Test installation'
+        echo 'Smoke test'
       }
     }
-    stage('Regression') {
+    stage('BizRegression') {
+      when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
+      steps {
+        echo 'Install '
+      }
+    }
+    stage('NFRegression') {
       when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
       parallel {
-        stage('Business') {
-          steps {
-            echo 'Check business functionality'
-          }
-        }
-        stage('Integration') {
+        stage('Interoperability') {
           steps {
             echo 'Check interfaces/integrations'
           }
@@ -38,6 +40,13 @@ pipeline {
             echo 'Run chaos monkeys'
           }
         }
+        stage('RollingUpdate') {
+          steps {
+            echo 'Install n-1 release from tag'
+            echo 'Run rolling update scripts'
+            echo 'Calm down phase'
+            echo 'Run Biz regression'
+          }
       }
     }
     stage('Acceptance') {
@@ -49,7 +58,7 @@ pipeline {
     stage('Production') {
       when { not { expression { BRANCH_NAME ==~ /^feature.*/ } } }
       steps {
-        echo 'Production deployment'
+        echo 'Production installation'
       }
     }
   }
